@@ -34,6 +34,9 @@ const reducer = (state = initialState, action) => {
       const newObject = action.data
       newState = state.concat(newObject)
       return newState
+    case 'SORT':
+      newState = state.sort((a,b) => a.votes < b.votes)
+      return newState
     default:
   }
   return state
@@ -56,6 +59,12 @@ export const createAnecdot = (content) => {
       id: getId(),
       votes: 0
     }
+  }
+}
+
+export const sort  = () => {
+  return {
+    type: 'SORT'
   }
 }
 
