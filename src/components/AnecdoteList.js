@@ -4,7 +4,8 @@ import { setNotification, clear } from '../reducers/NotificationReducer'
 
 
 const AnecdoteList = ({store}) => {
-  const anecdotes = store.getState().anecdotes
+  const {anecdotes, filter, } = store.getState()
+  const anecdotesToShow = anecdotes.filter(anecdote => anecdote.content.match(RegExp(filter,'i')))
 
   const vote = (id) => {
     console.log('vote', id)
@@ -20,7 +21,7 @@ const AnecdoteList = ({store}) => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotesToShow.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
