@@ -35,7 +35,7 @@ const AnecdoteList = (props) => {
   )
 }
 
-const anecdotesToShow = ({ anecdotes, filter}) => {
+const anecdotesToShow = ({ anecdotes, filter, notification}) => {
     return anecdotes.filter(anecdote => anecdote.content.match(RegExp(filter,'i')))
 }
 
