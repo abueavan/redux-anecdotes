@@ -1,20 +1,20 @@
-import React from 'react';
+import React from 'react'
+import{ connect } from 'react-redux'
 import { votes, sort } from '../reducers/anecdoteReducer'
 import { setNotification, clear } from '../reducers/NotificationReducer'
 
 
-const AnecdoteList = ({store}) => {
-  const {anecdotes, filter, } = store.getState()
-  const anecdotesToShow = anecdotes.filter(anecdote => anecdote.content.match(RegExp(filter,'i')))
+const AnecdoteList = (props) => {
+  const anecdotesToShow = props.anecdotes.filter(anecdote => anecdote.content.match(RegExp(props.filter,'i')))
 
   const vote = (id) => {
     console.log('vote', id)
-    const votedAnecodte = anecdotes.find(anecdote => anecdote.id === id)
-    store.dispatch(votes(votedAnecodte))
-    store.dispatch(sort())
-    store.dispatch(setNotification(`you have voted '${votedAnecodte.content}'`))
+    const votedAnecodte = props.anecdotes.find(anecdote => anecdote.id === id)
+    props.votes(votedAnecodte)
+    props.sort()
+    props.setNotification(`you have voted '${votedAnecodte.content}'`)
     setTimeout(() => {
-        store.dispatch(clear())
+        props.clear()
       }, 5000)
   }
 
@@ -36,4 +36,24 @@ const AnecdoteList = ({store}) => {
   )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+    // sometimes it is useful to console log from mapStateToProps
+    console.log(state)
+    return {
+      anecdotes: state.anecdotes,
+      filter: state.filter
+    }
+  }
+
+  const mapDispatchToProps = {
+    votes,
+    sort,
+    setNotification,
+    clear,
+  }
+  
+
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AnecdoteList)
