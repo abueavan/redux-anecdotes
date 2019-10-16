@@ -5,11 +5,10 @@ import { setNotification, clear } from '../reducers/NotificationReducer'
 
 
 const AnecdoteList = (props) => {
-  const anecdotesToShow = props.anecdotes.filter(anecdote => anecdote.content.match(RegExp(props.filter,'i')))
 
   const vote = (id) => {
     console.log('vote', id)
-    const votedAnecodte = props.anecdotes.find(anecdote => anecdote.id === id)
+    const votedAnecodte = props.anecdotesToShow.find(anecdote => anecdote.id === id)
     props.votes(votedAnecodte)
     props.sort()
     props.setNotification(`you have voted '${votedAnecodte.content}'`)
@@ -21,7 +20,7 @@ const AnecdoteList = (props) => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotesToShow.map(anecdote =>
+      {props.anecdotesToShow.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -36,12 +35,15 @@ const AnecdoteList = (props) => {
   )
 }
 
+const anecdotesToShow = ({ anecdotes, filter}) => {
+    return anecdotes.filter(anecdote => anecdote.content.match(RegExp(filter,'i')))
+}
+
 const mapStateToProps = (state) => {
     // sometimes it is useful to console log from mapStateToProps
     console.log(state)
     return {
-      anecdotes: state.anecdotes,
-      filter: state.filter
+      anecdotesToShow: anecdotesToShow(state)
     }
   }
 
